@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="input-task">
+      <input type="text" id="input-task-box" placeholder="Enter your task" />
+      <button id="add-task" onclick="addTaskToDo()">Add Task</button>
+    </div>
+
+    <div class="task-division">
+      <div class="task-box task-todo" id="task-todo"></div>
+
+      <div
+        class="task-box task-procesd"
+        id="task-procesd"
+        ondragover="allowDrop(event)"
+        ondrop="drop(event)"
+      ></div>
+
+      <div
+        class="task-box task-done"
+        id="task-done"
+        ondragover="allowDrop(event)"
+        ondrop="drop(event)"
+      ></div>
+    </div>
+
+    <div class="input-delete-task">
+      <input
+        type="text"
+        id="input-task-box-delete"
+        placeholder="Enter task to delete"
+      />
+      <button id="delete-task" onclick="deleteTask()">Delete Task</button>
+    </div>
+
+    <div class="reset-task">
+      <button id="reset-todo-tasks" onclick="resetToDoList()">
+        Reset ToDo Tasks
+      </button>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
