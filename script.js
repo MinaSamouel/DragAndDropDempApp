@@ -9,10 +9,14 @@ let inputTask = document.getElementById("input-task-box");
 
 let taskList = [];
 let taskElementToDo = "Tasks";
+
 let taskInProgress = [];
 let taskElementInProgress = "TasksInProgress";
 let taskDone = [];
 let taskElementDone = "TasksDone";
+if (taskList.length === 0)  localStorage.setItem(taskElementToDo, JSON.stringify(taskList));
+if (taskInProgress.length === 0)  localStorage.setItem(taskElementInProgress, JSON.stringify(taskInProgress));
+if (taskDone.length === 0) localStorage.setItem(taskElementDone, JSON.stringify(taskDone));
 
 // localStorage.setItem(taskElementToDo, JSON.stringify(taskList));
 // localStorage.setItem(taskElementInProgress, JSON.stringify(taskInProgress));
@@ -36,7 +40,11 @@ function addTaskToDo() {
 
   let taskInProgress = localStorage.getItem(taskElementInProgress);
   let taskInProgressList = JSON.parse(taskInProgress);
-  let taskIndex = taskInProgressList.findIndex((item) => item.name === task.name);
+  console.log(taskInProgressList);
+
+  let taskIndex = taskInProgressList.findIndex(
+    (item) => item.name === task.name
+  );
   if (taskIndex !== -1) {
     inputTask.value = " ";
     return;
@@ -116,7 +124,6 @@ function showTaskDone() {
 
     document.getElementById("task-done").innerHTML = taskItems;
   }
-
 }
 
 function drag(event) {
@@ -135,20 +142,18 @@ function drop(event) {
   let draggedElement = document.getElementById(id); // img
   event.target.appendChild(draggedElement);
   console.log(event.target.id);
-  if(event.target.id === "task-procesd"){
+  if (event.target.id === "task-procesd") {
     addTaskInProgress(id);
-  }
-  else if(event.target.id === "task-done"){
+  } else if (event.target.id === "task-done") {
     addTaskTaskDone(id);
   }
-
 }
 
-function addTaskInProgress(ElementToAdd){
+function addTaskInProgress(ElementToAdd) {
   let task = {
     name: ElementToAdd,
   };
-  
+
   taskInProgress.push(task);
   let tasksString = JSON.stringify(taskInProgress);
   localStorage.setItem(taskElementInProgress, tasksString);
@@ -158,18 +163,18 @@ function addTaskInProgress(ElementToAdd){
   let taskTodoList = JSON.parse(taskTodo);
 
   let taskIndex = taskTodoList.findIndex((item) => item.name === task.name);
-  if(taskIndex !== -1) taskTodoList.splice(taskIndex, 1);
+  if (taskIndex !== -1) taskTodoList.splice(taskIndex, 1);
 
   let taskTodoString = JSON.stringify(taskTodoList);
   localStorage.setItem(taskElementToDo, taskTodoString);
   showTaskToDo();
 }
 
-function addTaskTaskDone(ElementToAdd){
+function addTaskTaskDone(ElementToAdd) {
   let task = {
     name: ElementToAdd,
   };
-  
+
   taskDone.push(task);
 
   let tasksString = JSON.stringify(taskDone);
@@ -179,8 +184,10 @@ function addTaskTaskDone(ElementToAdd){
   let taskInProgress = localStorage.getItem(taskElementInProgress);
   let taskInProgressList = JSON.parse(taskInProgress);
 
-  let taskIndex = taskInProgressList.findIndex((item) => item.name === task.name);
-  if(taskIndex !== -1) taskInProgressList.splice(taskIndex, 1);
+  let taskIndex = taskInProgressList.findIndex(
+    (item) => item.name === task.name
+  );
+  if (taskIndex !== -1) taskInProgressList.splice(taskIndex, 1);
 
   let taskInProgressString = JSON.stringify(taskInProgressList);
   localStorage.setItem(taskElementInProgress, taskInProgressString);
@@ -190,7 +197,7 @@ function addTaskTaskDone(ElementToAdd){
   let taskTodoList = JSON.parse(taskTodo);
 
   let taskIndex1 = taskTodoList.findIndex((item) => item.name === task.name);
-  if(taskIndex1 !== -1) taskTodoList.splice(taskIndex1, 1);
+  if (taskIndex1 !== -1) taskTodoList.splice(taskIndex1, 1);
 
   let taskTodoString = JSON.stringify(taskTodoList);
   localStorage.setItem(taskElementToDo, taskTodoString);
@@ -211,12 +218,14 @@ function resetToDoList() {
 let deleteTaskName = document.getElementById("input-task-box-delete");
 
 function deleteTask() {
-  if(deleteTaskName.value === "") return;
+  if (deleteTaskName.value === "") return;
   let taskTodo = localStorage.getItem(taskElementToDo);
   let taskTodoList = JSON.parse(taskTodo);
 
-  let taskIndex1 = taskTodoList.findIndex((item) => item.name === deleteTaskName.value.trim().toLowerCase());
-  if(taskIndex1 !== -1) taskTodoList.splice(taskIndex1, 1);
+  let taskIndex1 = taskTodoList.findIndex(
+    (item) => item.name === deleteTaskName.value.trim().toLowerCase()
+  );
+  if (taskIndex1 !== -1) taskTodoList.splice(taskIndex1, 1);
 
   let taskTodoString = JSON.stringify(taskTodoList);
   localStorage.setItem(taskElementToDo, taskTodoString);
@@ -225,10 +234,12 @@ function deleteTask() {
   let taskInProgress = localStorage.getItem(taskElementInProgress);
   let taskInProgressList = JSON.parse(taskInProgress);
 
-  let taskIndex = taskInProgressList.findIndex((item) => item.name === deleteTaskName.value.trim().toLowerCase());
+  let taskIndex = taskInProgressList.findIndex(
+    (item) => item.name === deleteTaskName.value.trim().toLowerCase()
+  );
 
-  if(taskIndex !== -1) taskInProgressList.splice(taskIndex, 1);
-  
+  if (taskIndex !== -1) taskInProgressList.splice(taskIndex, 1);
+
   let taskInProgressString = JSON.stringify(taskInProgressList);
   localStorage.setItem(taskElementInProgress, taskInProgressString);
   showTaskInProgress();
@@ -236,9 +247,11 @@ function deleteTask() {
   let taskDone = localStorage.getItem(taskElementDone);
   let taskDoneList = JSON.parse(taskDone);
 
-  let taskIndex2 = taskDoneList.findIndex((item) => item.name === deleteTaskName.value.trim().toLowerCase());
+  let taskIndex2 = taskDoneList.findIndex(
+    (item) => item.name === deleteTaskName.value.trim().toLowerCase()
+  );
 
-  if(taskIndex2 !== -1) taskDoneList.splice(taskIndex2, 1);
+  if (taskIndex2 !== -1) taskDoneList.splice(taskIndex2, 1);
 
   let taskDoneString = JSON.stringify(taskDoneList);
   localStorage.setItem(taskElementDone, taskDoneString);
