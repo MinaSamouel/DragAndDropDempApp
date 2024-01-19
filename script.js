@@ -7,16 +7,44 @@
 
 let inputTask = document.getElementById("input-task-box");
 
-let taskList = [];
-let taskElementToDo = "Tasks";
 
-let taskInProgress = [];
+let taskElementToDo = "Tasks";
+let retrievedTasks = localStorage.getItem(taskElementToDo);
+let taskList;
+
+if(!retrievedTasks)  {
+  taskList = [];
+  localStorage.setItem(taskElementToDo, JSON.stringify(taskList));
+}
+else {
+  taskList = JSON.parse(retrievedTasks);
+}
+
 let taskElementInProgress = "TasksInProgress";
-let taskDone = [];
+retrievedTasks = localStorage.getItem(taskElementInProgress);
+let taskInProgress; 
+if(!retrievedTasks)  {
+  taskInProgress = [];
+  localStorage.setItem(taskElementInProgress, JSON.stringify(taskInProgress));
+}
+else {
+  taskInProgress = JSON.parse(retrievedTasks);
+}
+
 let taskElementDone = "TasksDone";
-if (taskList.length === 0)  localStorage.setItem(taskElementToDo, JSON.stringify(taskList));
-if (taskInProgress.length === 0)  localStorage.setItem(taskElementInProgress, JSON.stringify(taskInProgress));
-if (taskDone.length === 0) localStorage.setItem(taskElementDone, JSON.stringify(taskDone));
+retrievedTasks = localStorage.getItem(taskElementDone);
+let taskDone ;
+if(!retrievedTasks)  {
+  taskDone = [];
+  localStorage.setItem(taskElementInProgress, JSON.stringify(taskDone));
+}
+else {
+  taskDone = JSON.parse(retrievedTasks)
+}
+
+// if (taskList.length === 0)  localStorage.setItem(taskElementToDo, JSON.stringify(taskList));
+// if (taskInProgress.length === 0)  localStorage.setItem(taskElementInProgress, JSON.stringify(taskInProgress));
+// if (taskDone.length === 0) localStorage.setItem(taskElementDone, JSON.stringify(taskDone));
 
 // localStorage.setItem(taskElementToDo, JSON.stringify(taskList));
 // localStorage.setItem(taskElementInProgress, JSON.stringify(taskInProgress));
@@ -40,7 +68,6 @@ function addTaskToDo() {
 
   let taskInProgress = localStorage.getItem(taskElementInProgress);
   let taskInProgressList = JSON.parse(taskInProgress);
-  console.log(taskInProgressList);
 
   let taskIndex = taskInProgressList.findIndex(
     (item) => item.name === task.name
@@ -128,6 +155,7 @@ function showTaskDone() {
 
 function drag(event) {
   event.dataTransfer.setData("text", event.target.id);
+  console.log(event);
   // console.log(event.target.id);
 }
 
@@ -138,10 +166,10 @@ function allowDrop(event) {
 function drop(event) {
   event.preventDefault();
   let id = event.dataTransfer.getData("text");
-  console.log("element id is " + id);
+  // console.log("element id is " + id);
   let draggedElement = document.getElementById(id); // img
   event.target.appendChild(draggedElement);
-  console.log(event.target.id);
+  // console.log(event.target.id);
   if (event.target.id === "task-procesd") {
     addTaskInProgress(id);
   } else if (event.target.id === "task-done") {
@@ -225,7 +253,12 @@ function deleteTask() {
   let taskIndex1 = taskTodoList.findIndex(
     (item) => item.name === deleteTaskName.value.trim().toLowerCase()
   );
-  if (taskIndex1 !== -1) taskTodoList.splice(taskIndex1, 1);
+  while (taskIndex1 !== -1){
+    taskTodoList.splice(taskIndex1, 1);
+    taskIndex1 = taskTodoList.findIndex(
+      (item) => item.name === deleteTaskName.value.trim().toLowerCase()
+    );
+  } 
 
   let taskTodoString = JSON.stringify(taskTodoList);
   localStorage.setItem(taskElementToDo, taskTodoString);
@@ -238,7 +271,12 @@ function deleteTask() {
     (item) => item.name === deleteTaskName.value.trim().toLowerCase()
   );
 
-  if (taskIndex !== -1) taskInProgressList.splice(taskIndex, 1);
+  while (taskIndex !== -1) {
+    taskInProgressList.splice(taskIndex, 1);
+    taskIndex = taskInProgressList.findIndex(
+      (item) => item.name === deleteTaskName.value.trim().toLowerCase()
+    );
+  } 
 
   let taskInProgressString = JSON.stringify(taskInProgressList);
   localStorage.setItem(taskElementInProgress, taskInProgressString);
@@ -251,7 +289,12 @@ function deleteTask() {
     (item) => item.name === deleteTaskName.value.trim().toLowerCase()
   );
 
-  if (taskIndex2 !== -1) taskDoneList.splice(taskIndex2, 1);
+  while (taskIndex2 !== -1) {
+    taskDoneList.splice(taskIndex2, 1);
+    taskIndex2 = taskDoneList.findIndex(
+      (item) => item.name === deleteTaskName.value.trim().toLowerCase()
+    );
+  } 
 
   let taskDoneString = JSON.stringify(taskDoneList);
   localStorage.setItem(taskElementDone, taskDoneString);
